@@ -7,13 +7,19 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LeftPanelComponent } from './left-panel/left-panel.component';
 import { RightPanelComponent } from './right-panel/right-panel.component';
+import { ContainerComponent } from './container/container.component';
+import { AboutComponent } from './about/about.component';
+import { TermsComponent } from './terms/terms.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LeftPanelComponent,
-    RightPanelComponent
+    RightPanelComponent,
+    ContainerComponent,
+    AboutComponent,
+    TermsComponent
   ],
   imports: [
     BrowserModule,
