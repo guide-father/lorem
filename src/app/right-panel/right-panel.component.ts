@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { loremIpsum } from "lorem-ipsum";
+import { ActivatedRoute } from '@angular/router';
+import { UtilityService } from "../utility.service"
 
 
 @Component({
@@ -9,23 +10,48 @@ import { loremIpsum } from "lorem-ipsum";
 })
 export class RightPanelComponent implements OnInit {
 
-  constructor() { }
-
+  result = ""
+  constructor(private route: ActivatedRoute, private utility: UtilityService) { }
   ngOnInit(): void {
 
-    let test=loremIpsum({
-      count: 1,                // Number of "words", "sentences", or "paragraphs"
-      format: "plain",         // "plain" or "html"
-      paragraphLowerBound: 3,  // Min. number of sentences per paragraph.
-      paragraphUpperBound: 7,  // Max. number of sentences per paragarph.
-      random: Math.random,     // A PRNG function
-      sentenceLowerBound: 5,   // Min. number of words per sentence.
-      sentenceUpperBound: 15,  // Max. number of words per sentence.
-      suffix: "\n",            // Line ending, defaults to "\n" or "\r\n" (win32)
-      units: "sentences",      // paragraph(s), "sentence(s)", or "word(s)"
-      words: ["ad",'me']       // Array of words to draw from
+    this.route.queryParams.subscribe(p => {
+      this.result = "est"
     })
-    console.log(test)
+    console.log(this.getRandomSent())
+  }
+
+  getRandomNum(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  getRandomWord(initial = false) {
+    let randomnum = this.getRandomNum(2, 10);
+    let word = "";
+    for (let i = 0; i < randomnum; i++) {
+      let randomW = String.fromCharCode(this.getRandomNum(97, 112))
+      if (initial && i == 0) {
+        word += randomW.toUpperCase()
+      } else {
+        word += randomW
+      }
+    }
+    return word;
+  }
+
+  getRandomSent() {
+    let wordLength = this.getRandomNum(this.utility.MinWord, this.utility.MaxWord);
+    let sentence = "";
+    for (let i = 0; i < wordLength; i++) {
+      if (i == 0) {
+        sentence += this.getRandomWord(true)+" "
+      }else if(i==wordLength-1){
+        sentence += this.getRandomWord()+"."
+      }else {
+        sentence += this.getRandomWord()+" "
+      }
+
+    }
+    return sentence;
   }
 
 }
