@@ -24,8 +24,7 @@ import { TermsComponent } from './terms/terms.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
-  ],
+    FormsModule  ],
   providers: [],
   bootstrap: [AppComponent]
 })

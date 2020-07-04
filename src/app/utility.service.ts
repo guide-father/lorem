@@ -6,67 +6,63 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class UtilityService {
   ViewType: string = "Para";
-  MaxSent: number = 5;
-  MinSent: number = 10;
-  MaxWord: number = 10;
-  MinWord: number = 15;
-  Words: string = "";
+  MaxSent: number = 10;
+  MinSent: number = 5;
+  MaxWord: number = 15;
+  MinWord: number = 10;
   Count: number = 1;
-  Format: string = "plain"
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   updateRoute(obj) {
     const urlTree = this.router.createUrlTree([], {
       queryParams: obj,
-      // queryParamsHandling: "merge",
       preserveFragment: true
     });
     this.router.navigateByUrl(urlTree);
   }
 
   checkRoute() {
-    let queryParams = this.route.snapshot.queryParams;
-    if (queryParams.ViewType !== "Para" && queryParams.ViewType !== "Sent" && queryParams.ViewType !== "Word" && queryParams.ViewType !== "Detail") {
-      this.ViewType = "Para";
-    }
-    if (queryParams.Count && typeof queryParams.Count == 'number') {
-      this.Count = queryParams.Count;
-    }
-    if (queryParams.MaxSent && typeof queryParams.MaxSent == 'number') {
-      this.MaxSent = queryParams.MaxSent;
-    }
-    if (queryParams.MinSent && typeof queryParams.MinSent == 'number') {
-      this.MinSent = queryParams.MinSent;
-    }
-    if (queryParams.MaxWord && typeof queryParams.MaxWord == 'number') {
-      this.MaxWord = queryParams.MaxWord;
-    }
-    if (queryParams.MinWord && typeof queryParams.MinWord == 'number') {
-      this.MinWord = queryParams.MinWord;
-    }
-    if (queryParams.Words && typeof queryParams.Words == 'string') {
-      this.Words = queryParams.Words;
-    }
-    if (queryParams.Format && typeof queryParams.Format == 'string' && (queryParams.Format == "plain" || queryParams.Format == "html")) {
-      this.Format = queryParams.Format;
-    }
-
     if (this.ViewType == "Para") {
       this.updateRoute({
         Count: this.Count,
         MaxSent: this.MaxSent,
         MinSent: this.MinSent,
         ViewType: this.ViewType,
-        Format: this.Format
+        MaxWord: this.MaxWord,
+        MinWord: this.MinWord
       })
     } else if (this.ViewType == "Sent") {
       this.updateRoute({
         Count: this.Count,
         MaxWord: this.MaxWord,
         MinWord: this.MinWord,
-        ViewType: this.ViewType,
-        Format: this.Format
+        ViewType: this.ViewType
       })
     }
+  }
+
+  checkParams(){
+    let queryParams = this.route.snapshot.queryParams;
+    if (queryParams.ViewType == "Para" || queryParams.ViewType == "Sent" || queryParams.ViewType == "Detail") {
+      this.ViewType = queryParams.ViewType;
+    }else{
+      this.ViewType = "Para";
+    }
+    if (queryParams.Count && typeof parseInt(queryParams.Count) == 'number') {
+      this.Count =  parseInt(queryParams.Count);
+    }
+    if (queryParams.MaxSent && typeof  parseInt(queryParams.MaxSent) == 'number') {
+      this.MaxSent =  parseInt(queryParams.MaxSent);
+    }
+    if (queryParams.MinSent && typeof  parseInt(queryParams.MinSent) == 'number') {
+      this.MinSent =  parseInt(queryParams.MinSent);
+    }
+    if (queryParams.MaxWord && typeof  parseInt(queryParams.MaxWord) == 'number') {
+      this.MaxWord =  parseInt(queryParams.MaxWord);
+    }
+    if (queryParams.MinWord && typeof  parseInt(queryParams.MinWord) == 'number') {
+      this.MinWord =  parseInt(queryParams.MinWord);
+    }
+   
   }
 }

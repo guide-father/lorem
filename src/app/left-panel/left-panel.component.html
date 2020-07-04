@@ -1,52 +1,39 @@
 <form class="ui form">
-    <h1 class="ui dividing header mt-10">Shipping Information</h1>
+    <h1 class="ui dividing header mt-10">Generate Dummy Text</h1>
     <div class="sixteen wide field">
         <div class="field">
             <label>Select Type</label>
 
             <select class="ui fluid dropdown" [(ngModel)]="this.utility.ViewType" name="Viewtype" (change)="this.utility.checkRoute()">
-                <option value="Para">Paragraph</option>
-                <option value="Sent">Sentence</option>
-                <option value="Word">Word</option>
-                <option value="Detail">Details</option>
+                <option value="Para">Paragraphs</option>
+                <option value="Sent">Sentences</option>
+                <!-- <option value="Detail" >Details</option> -->
             </select>
         </div>
-        <div class="field" *ngIf="this.utility.ViewType=='Para'" (change)="this.utility.checkRoute()">
+        <div class="field" (change)="this.utility.checkRoute()">
             <label>Count</label>
-            <input type="number" placeholder="Number of content" [(ngModel)]="this.utility.Count" name="count">
+            <input type="number" placeholder="Number of content" [(ngModel)]="this.utility.Count" name="count" min="1">
         </div>
         <!-- Paragraph -->
-        <div class="field" *ngIf="this.utility.ViewType=='Para'" (change)="this.utility.checkRoute()">
-            <label>Minimum number of sentences</label>
-            <input type="number" placeholder="Minimum number of sentences" [(ngModel)]="this.utility.MaxSent" name="maxsent">
+        <div class="field" (change)="this.utility.checkRoute()" *ngIf="this.utility.ViewType=='Para'">
+            <label>Minimum number of sentences in paragraph</label>
+            <input type="number" placeholder="Minimum number of sentences" [(ngModel)]="this.utility.MinSent" name="maxsent" min="1" [max]="this.utility.MaxSent">
         </div>
-        <div class="field" *ngIf="this.utility.ViewType=='Para'" (change)="this.utility.checkRoute()">
-            <label>Maximum number of sentences</label>
-            <input type="number" placeholder="Maximum number of sentences" [(ngModel)]="this.utility.MinSent" name="minsent">
+        <div class="field" (change)="this.utility.checkRoute()" *ngIf="this.utility.ViewType=='Para'">
+            <label>Maximum number of sentences in paragraph</label>
+            <input type="number" placeholder="Maximum number of sentences" [(ngModel)]="this.utility.MaxSent" name="minsent" [min]="this.utility.MinSent">
         </div>
 
         <!-- sentence -->
-        <div class="field" *ngIf="this.utility.ViewType=='Sent'">
-            <label>Minimum number of words</label>
-            <input type="number" placeholder="Minimum number of words" [(ngModel)]="this.utility.MaxWord" name="maxword">
-        </div>
-        <div class="field" *ngIf="this.utility.ViewType=='Sent'">
-            <label>Maximum number of words</label>
-            <input type="number" placeholder="Maximum number of words" [(ngModel)]="this.utility.MinWord" name="minword">
-        </div>
-
-        <div class="field"  *ngIf="this.utility.ViewType=='Word'">
-            <label>Words</label>
-            <input type="number" placeholder="Words to draw from" [(ngModel)]="this.utility.Words" name="word">
-        </div>
-
         <div class="field">
-            <label>Format</label>
-            <select class="ui fluid dropdown" [(ngModel)]="this.utility.Format" name="format">
-                <option value="AL">Plain Text</option>
-                <option value="AK">HTML</option>
-            </select>
+            <label>Minimum number of words in sentence</label>
+            <input type="number" placeholder="Minimum number of words" [(ngModel)]="this.utility.MinWord" name="maxword" (change)="this.utility.checkRoute()" min="1" [max]="this.utility.MaxWord">
         </div>
+        <div class="field">
+            <label>Maximum number of words in sentence</label>
+            <input type="number" placeholder="Maximum number of words" [(ngModel)]="this.utility.MaxWord" name="minword" (change)="this.utility.checkRoute()" [min]="this.utility.MinWord">
+        </div>
+
 
         
     </div>

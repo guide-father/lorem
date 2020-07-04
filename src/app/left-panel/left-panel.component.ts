@@ -13,6 +13,6 @@ export class LeftPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utility.checkRoute();
+    this.utility.checkParams();
   }
 }

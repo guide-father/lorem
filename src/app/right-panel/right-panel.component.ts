@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from "../utility.service"
-
+import * as faker from 'faker';
 
 @Component({
   selector: 'app-right-panel',
@@ -13,45 +13,55 @@ export class RightPanelComponent implements OnInit {
   result = ""
   constructor(private route: ActivatedRoute, private utility: UtilityService) { }
   ngOnInit(): void {
-
     this.route.queryParams.subscribe(p => {
-      this.result = "est"
+      this.result = this.generateByCount()
     })
-    console.log(this.getRandomSent())
   }
 
   getRandomNum(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
 
-  getRandomWord(initial = false) {
-    let randomnum = this.getRandomNum(2, 10);
-    let word = "";
-    for (let i = 0; i < randomnum; i++) {
-      let randomW = String.fromCharCode(this.getRandomNum(97, 112))
-      if (initial && i == 0) {
-        word += randomW.toUpperCase()
-      } else {
-        word += randomW
+  generateSentence() {
+    let sentLength = this.getRandomNum(this.utility.MinWord, this.utility.MaxWord);
+    let sentence = faker.lorem.sentence().split(" ");
+    let newSent = sentence[0] + " ";
+    if (sentLength > sentence.length) {
+      for (let i = 0; i < sentLength - sentence.length; i++) {
+        newSent += faker.lorem.word() + " "
       }
+      for (let i = 1; i < sentence.length; i++) {
+        newSent += sentence[i] + " "
+      }
+    } else if (sentLength < sentence.length) {
+      for (let i = sentence.length - sentLength + 1; i < sentence.length; i++) {
+        newSent += sentence[i] + " "
+      }
+    } else if (sentLength == sentence.length) {
+      newSent = sentence.join(" ")
     }
-    return word;
+    return newSent;
   }
 
-  getRandomSent() {
-    let wordLength = this.getRandomNum(this.utility.MinWord, this.utility.MaxWord);
-    let sentence = "";
-    for (let i = 0; i < wordLength; i++) {
-      if (i == 0) {
-        sentence += this.getRandomWord(true)+" "
-      }else if(i==wordLength-1){
-        sentence += this.getRandomWord()+"."
-      }else {
-        sentence += this.getRandomWord()+" "
-      }
-
+  generatePara() {
+    let paraLength = this.getRandomNum(this.utility.MinSent, this.utility.MaxSent);
+    let para = "";
+    for (let i = 0; i < paraLength; i++) {
+      para += this.generateSentence()
     }
-    return sentence;
+    return para;
+  }
+
+  generateByCount() {
+    let content = "";
+    for (let i = 0; i < this.utility.Count; i++) {
+      if (this.utility.ViewType == "Para") {
+        content += `<p>${this.generatePara()}<p>`
+      } else if (this.utility.ViewType == "Sent") {
+        content += `<p>${this.generateSentence()}<p>`
+      }
+    }
+    return content
   }
 
 }
