@@ -10,7 +10,7 @@ export class UtilityService {
   MinSent: number = 5;
   MaxWord: number = 15;
   MinWord: number = 10;
-  Count: number = 1;
+  Count: number = 5;
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   updateRoute(obj) {

@@ -56,12 +56,50 @@ export class RightPanelComponent implements OnInit {
     let content = "";
     for (let i = 0; i < this.utility.Count; i++) {
       if (this.utility.ViewType == "Para") {
-        content += `<p>${this.generatePara()}<p>`
+        content += `<p>${this.generatePara()}</p>`
       } else if (this.utility.ViewType == "Sent") {
-        content += `<p>${this.generateSentence()}<p>`
+        content += `<p>${this.generateSentence()}</p>`
       }
     }
     return content
   }
 
+  Download(type) {
+    let url=""
+    let fileName=""
+    if(type=="html"){
+      let blob = new Blob([this.result], { type: 'text/csv' });
+      url = window.URL.createObjectURL(blob);
+      fileName=`dummy-${new Date().toISOString().split(":")[0]}.html`
+    }else{
+      let blob = new Blob([this.result.replace( new RegExp("<p>","gm"),"").replace( new RegExp("</p>","gm"),"\n")], { type: 'text/csv' });
+      url = window.URL.createObjectURL(blob);
+      fileName=`dummy-${new Date().toISOString().split(":")[0]}.txt`
+
+    }
+    let ele=document.createElement("a");
+    ele.href=url;
+    ele.download=fileName
+    ele.click()
+  }
+
+  Copy(type){
+   
+    if(type=="text"){
+      this.copyStringToClipboard(this.result.replace( new RegExp("<p>","gm"),"").replace( new RegExp("</p>","gm"),"\n"))
+    }
+    if(type=="html"){
+      this.copyStringToClipboard(this.result.replace( new RegExp("</p>","gm"),"</p>\n"))
+    }
+  }
+  copyStringToClipboard (str) {
+    function handler (event){
+        event.clipboardData.setData('text/plain', str);
+        event.preventDefault();
+        document.removeEventListener('copy', handler, true);
+    }
+
+    document.addEventListener('copy', handler, true);
+    document.execCommand('copy');
+}
 }

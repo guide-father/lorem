@@ -1,1 +1,25 @@
-<p [innerHTML]="result"></p>
+<div class="ui hidden divider"></div>
+
+<div style="text-align: right;">
+    <button class="ui red button" (click)="this.Download('html')">
+        <i class="html5 icon"></i>
+        Download HTML
+    </button>
+    <button class="ui red button" (click)="this.Download('text')">
+        <i class="file alternate icon"></i>
+        Download TEXT
+    </button>
+    <button class="ui red button" (click)="this.Copy('html')">
+        <i class="code icon"></i>
+       Copy HTML
+    </button>
+    <button class="ui red button" (click)="this.Copy('text')">
+        <i class="copy icon"></i>
+        Copy TEXT
+    </button>
+</div>
+<div class="ui raised segment content-sec">
+    <div >
+        <p [innerHTML]="result"></p>
+    </div>
+</div>
